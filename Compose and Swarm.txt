@@ -1,0 +1,27 @@
+Compose, çoklu Docker uygulamalarını tanımlamak ve çalıştırmak için bir araçtır. Compose İle uygulamanızın hizmetlerini yapılandırmak için bir YAML dosyası kullanırsınız. Ardından, tek bir komutla, tüm hizmetleri yapılandırmanızdan oluşturur ve başlatırsınız. 
+
+Verilerin durduğu yeri volume yap ki container kapanınca veriler kaybolmasın 
+
+docker-compose –version –> compose var mı yok mu bakmak için  
+
+docker-compose up –d ---> bu kod ile yml dosyası sayesinde sistemi komple ayağa kaldırıyorum 
+
+docker-compose down --> bu da durduracak  
+
+docker-compose config ---> yml dosyasının içeriğini görürüm 
+
+docker-compose images ---> servicelerin hangi image ile oluşturduğunu gösterir 
+
+Docker-compose logs ---> bütün servicelerin logları görürsün 
+
+docker-compose exec  websrv ls -al--> compose ile oluşturulan websrv(services) altında ls -al komutunu çalıştırır 
+
+Compose için service=container diyebiliriz. 
+
+Down yapınca volume hariç her şey silinir 
+
+ 
+
+Projeyi kaldırdık sonra tkrar down yaptık yemilik yapıp tekrar kaldıracağım ama image silinmedi. Bu yüzden up yapmadan önce imageyi güncellemem gerekiyor 
+
+Docker-compose build ile bunu yapabiliyorum 

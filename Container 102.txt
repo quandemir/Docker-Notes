@@ -1,0 +1,55 @@
+Bridge—bir köprü oluşturan driverdır.Varsayılan driverdır yani bi containır yaratılınca direk bu driver bağlanır 
+
+• Her sistemde host driver ile 
+
+yaratılmış Host adından bir 
+
+network bulunur. 
+
+• BU networkle bağlı container'da 
+
+network izolasyonu olmaz. 
+
+Sanki o host üstünde çalışan bir 
+
+process gibi host'un ağ 
+
+kaynaklarını kullanır. 
+
+ 
+
+MacVlan• BU driver ile OlUŞtUrUIan 
+
+network objeleri sayesinde 
+
+containerlar fiziksel ağlara 
+
+kendi mac adreslerine sahip 
+
+birer fiziksel ağ adaptörüne 
+
+sahipmişcesine bağlanabilirler. 
+
+ 
+
+ 
+
+None• Container hiçbir şekilde ağ 
+
+bağlantısına sahip olmasın 
+
+istenirse bl.-) driver ile yaratılan 
+
+networkle bağlanır. 
+
+ 
+
+Overlay• Ayrı hostlar üstündeki 
+
+containerların aynı ağda 
+
+çalışıyormuş gibi çalışması 
+
+istendiği zaman Overlay 
+
+networkler devreye girer. 

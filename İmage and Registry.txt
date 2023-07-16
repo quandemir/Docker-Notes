@@ -1,0 +1,213 @@
+Image Registry --> docker imagelerini depolayabildiğimiz istemlerdir 
+
+Docker.io/ubuntu:18.04 (registry URL / Repository / Tag ) 
+
+Tag belirtmezsen hep yaptıklarını latest tagi olarak adlandırır.Latest varsayılan tagdir. 
+
+ 
+
+Docker pull ozgurozturknet/adanzyedocker:v1 --> v1 tag olan ımagı çekti  
+
+ 
+
+Linux Sunucuya Java Uygulaması Kurma Adımları 
+
+1: Fiziksel ya da Sanal Sunucu kur 
+
+2: işletim sistemi kur 
+
+3: İşletim sistemini güncelle sudo apt-get update -y 
+
+4: Java Runtime Environment (JRE) kur   sudo apt-get install default-jre -y 
+
+5: Uygulamayı sisteme kopyala 
+
+6: Sistem başlatıldığında uygulamanın da başlaması için ayar yap 
+
+ 
+
+Dockerfile içeriği 
+
+FROM ubuntu:18.04 
+
+RUN apt-get update -y 
+
+RUN apt-get install default-jre -y 
+
+WORKDIR /merhaba 
+
+COPY /myapp .merhaba 
+
+CMD ["JAVA","merhaba"] 
+
+ 
+
+ 
+
+docker image build -t ozgurozturknet/merhaba -f Dockerfile --> Dockerfiledan image oluşturuyopruz.Eğer aynı klasör içindeysen -f kullanmana gerek yok  
+
+ 
+
+Docker image build –t pingimaj –f .\Dockerfile.Centos 
+
+ 
+
+ 
+
+Docker image push ozzgurozturknet/merhaba --> bunu docker huba push eder 
+
+ 
+
+ 
+
+FROM python:alpine 
+
+# büütün dosyaları app klasörüne atıyor 
+
+COPY . /app   
+
+# app klasörüne geçiyoruz 
+
+WORKDIR /app 
+
+# txt yi gösterekek yüklüyoruz 
+
+RUN pip install -r requirements.txt 
+
+# 5000 portunu expose ediyoruz 
+
+EXPOSE 5000 
+
+# calıştırıyoruz 
+
+CMD python ./index.py 
+
+ 
+
+ 
+
+  
+
+Docker run –it ubuntu bash --> ubuntu sistemine geçmiş olursun  
+
+echo $SHELL > deneme.txt --> shell çıktısını deneme.txt dosyasına gönderir 
+
+./test.sh & --> çıktıyı veriri script arka pşanda çalışmaya devam eder 
+
+-->1.komutun çıktısını 2.komutun girdisi olarak yapar 
+
+Grep 3 abc.txt--> abc.txt dosyası içinde 3 karakteri varsa onun olduğu satıırı çıktı olarak verecek 
+
+Cat abc.txt  | grep 3 --> abc.txt çıktısını sağdadki komuta girdi verdi (pipe denir |) 
+
+Ls ; date --> ; birden fazla komut girmemizi sağlar 
+
+Komut1 && komut2 --> komut 1 i işler başarılıysa 2 e geçer  
+
+Komut1 || komut 2 --> 1i çalıştır başarılıysa 2 yi çalıştırma 
+
+\ --> kodun alt satıda devam eder 
+
+ 
+
+Add uzak bir lokasyondan (website) dosya kopyalamamızı sağlar 
+
+Copy ile sıkıştırılmış dosya aynı şekilde kopyalanır ama add de ise sıkıştırılmış dosya açılıp kopyalanır 
+
+ 
+
+Cmd ile entrypoint aynı ama tek fark entrypoint ile yazdığını runtime ile container oluştururken değiştiremezsin. 
+
+Hem cdm hem entrypoint varsa cmd talimatlarını entrypointe parametre olarak ekler. 
+
+ 
+
+CMD["java","uygulama"] --> exec form 
+
+CMD java uygulama--> Shell Formu 
+
+Ikiside aynı işi yapar ama küçük farklar var. Exec formunda çalışırsa Environment Variable gibi değerlere erişilemez.Entrypoint ve Cmd birlikte kullanılacaksa Exec form kullanılmalıdır. 
+
+Docker cp  javauygulama:/usr/src/uygulama . --> javauygulama adlı containerdan uygulama klasörünü kopyalıyoruz bulunduğumuz yere(. Bulunduğun yer demek) 
+
+ 
+
+Jdk içinde java için her şey, jre içinde sadece javayı çalıştırmak için gerekli olan var  
+
+ 
+
+Java uygulaması çalıştırmak istiyoryoum Dockerfile oluşturuyorum sonra image ve o imageden container oluşturuyorum ama küçük bir dosya jdk sebebinden dolayı 250mb boyutuna ulaştı. Bunun boyutunu düşürmem gerekiyor. İstersen bu containerdaki dosyı kopyalayıp tekrar dockerflile oluşturup tabi bu sefer sadece jre kullnarak sonra bu dockerfile ile image sonrra o imageden tekrar container oluşturabilirsin. BBunu yapınca 130mb düşmüş olduğunu görüyorum. Ama ben her seferinde bunu yapmak yerine Multi-stage build kullanırsam işi çözebilirim. 
+
+Docker tarafından 2017 seneinde yayınlanan Multi-stage build özelliği bizim imaj yaratma aşamasını kademelere bölmemize ve ilk kademede yarattığımız imaj içerisindeki dosyaları bir sonraki kademede oluşturacağımız imaja kopyalayabilmemize imkan sağlıyor. Bu sayede nihai imaj boyutumuzun küçülmesine imkan tanıyor. 
+
+ 
+
+Yani Dockerfile içi şu şekilde olmalı  
+
+From mcr.microsoft.com/java/jdk:8-zulu-alpine AS derleyici 
+
+COPY /source /usr/serc/uygulama 
+
+WORKDIR /usr/src/uygulama 
+
+RUN javac uygulama.java 
+
+FROM mcr.microsoft.com/java/jre:8-zulu-alpine 
+
+WORKDIR /uygulama 
+
+COPY –from=derleyici /usr/src/uygulama . 
+
+CMD ["java","uygulama"] 
+
+Artık bundan sonra image ve container oluşturabilirsin 
+
+ 
+
+ 
+
+ 
+
+Python paketini yüklerken versionu daima farklı isteyebiliriz. Bu yüzden dockerfile klasörüne şu şekilde bir düzenleme yapmalıyız 
+
+FROM ubuntu:latest  
+
+WORKDIR /gecici 
+
+ARG VERSION 
+
+ADD https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tgz . 
+
+CMD ls –al 
+
+ 
+
+Sonra image oluştururken  
+
+Image build –t x1 –build-arg VERSION=3.7.1 . 
+
+Ve sonra container oluştur 
+
+Docker commit con1 ozgurozturknet/con1:latest --> con1 conteynırından image oluşturuyor 
+
+Sistem inte bağlı değil güvenlik nedeniyle peki biz nasıl container oluşturacağız 
+
+Docker save ozgurozturknet/con1:latest –o con1imaj.tar --> ozgurozturknet/con1 imajını tar dosyası haline getirdi  
+
+Şimdi bu dosyayı flaşa attık diğer tarafta açacağız 
+
+Docker load –i .\con1imaj.tar --> şimdi image çıkartacak yani ozgurozturknet/con1:latest isimli imaj oluşacak 
+
+Docker Registry --> Kendi url depomuzu kurmamızı sağlayan üründür.Sadece imageler depolanır.Test ortamı için 
+
+Ilk önce hubtan registry imagesini indir  
+
+Docker run –d –p 5000:5000 –restart always –name registry registry --> imageden container oluşturacak.Restarttan sonra no,on-failure,unless-stopped gibi seçeneği var. 
+
+ 
+
+Docker image tag ozgurozturknet/hello:app:latest 127.0.0.1:5000/hello-app:latest  --> burada sadece tag değiştirip farklı bi image olarak kaydettik. 
+
+Docker image push 127.0.0.1:5000/hello-app:latest --> bu imageyi artık registry'e gönderdik (pull dersende çekersin ) genelde bunu kendi sistemimizde kullanıyoruz. 
+
+ 

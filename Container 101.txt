@@ -1,0 +1,197 @@
+Docker version --> version öğreniriz 
+
+ 
+
+Docker info --> bilgileri alırız 
+
+ 
+
+Docker --> bütün komutlar gelir 
+
+ 
+
+docker container run hello-world --> container oluşturur ve çalışturur <--docker run hello-world 
+
+ 
+
+İmage--> Bir uygulamanın içinde çalışması gerekn ek kütüphanelerin ve diğer öğelerin paketlenmiş haline denir(çekirdek ve kernel yok). Imagelerin çalışması halidir. 
+
+ 
+
+Docker image –help dersen sana image ile ilgili komutları söyler 
+
+ 
+
+docker container run --name ilkcontainer ozgurozturknet/app1 pull yaptık ve image ı çekti ve bu imageden hemen container oluşturdu 
+
+ 
+
+docker container ls –a sistemdeki dockerları gösterir(-a çalışamayanda dahil demek)(docker ps -a ile aynı şeydir) 
+
+ 
+
+Her container imajında, o imajdan bir container yarattığımız zaman varsayılan olarak çalışması için ayarlanmış bir uygulama vardır. Bu uygulama çalıştığı sürece container ayakta kalır. Uygulama çalışmayı bıraktığında container de kapatılır. 
+
+ 
+
+Docker imagelerinde sadece tek bir uygulama yoktur. 
+
+ 
+
+docker container run -p 80:80 ozgurozturknet/adanzyedocker bu container oluşturacak ve durdurmak için ctrl+c yap ama durmayacak arka planda çalışacak onu da görmek için docker container ls komutunu kullanabilirsin 
+
+ 
+
+docker container logs 2c07e9a7f09c -->2c07e9a7f09c  bu id numralı containera göre loglarını görebiliyoruz.id nin tamamını değil ilk 3 karakterini bile girsen bulur.Çünkü id ler eşsiz ve benzemez. 
+
+ 
+
+docker container run --name denemecon ozgurozturknet/adanzyedocker java app1 imageden container oluşturduk ve başlatırken java çalıştır app1 i çalıştırdı ve kapandı 
+
+ 
+
+Docker container stop 2c07e9a7f09c  containerı durdurur 
+
+ 
+
+docker container run -d -p 80:80 ozgurozturknet/adanzyedocker 
+
+ 
+
+Çalışan containırı il durdurup sonra silersin ya da kısa yol olarak docker container rm –f id ile kolayca silebilirsin 
+
+ 
+
+docker container exec -it websunucu sh çalışan bi websunucu adlı containerın shelline bağlan demek 
+
+ 
+
+  
+
+echo "bunu ben ekledim" >> index.html index dosyasına yazıyı ekler 
+
+ 
+
+Containerın ilk uygulaması durduğu anda containerda durur 
+
+ 
+
+docker start websunucu tekrardan containırı çalıştırır 
+
+ 
+
+docker container prune çalışmayan bütün containerları siler 
+
+ 
+
+docker image prune –a bütün imageleri siler 
+
+ 
+
+docker image pull alpine --> docker hub üzerindeki alpine ımagenını çekiyoruz 
+
+ 
+
+1.Containerlar tek bir uygulama çalıştırmak için oluşturulurlar. 
+
+2.Containerlar bu tek uygulamanın çalışması için gerekli tüm gereksinimlerin 
+
+önceden hazırlandığı image dediğimiz objelerden yaratılırlar. Containerla ilgili 
+
+tüm bu gereksinimlerin imaj seviyesinde tamamlanmış olması beklenir. 
+
+3.Bir container içinde çalışan ana uygulama dl-ırdUrUIdUğU anda container da 
+
+durdurulur. Container durduğu anda sistemin sorun OldUğUnU anlayarak aynı 
+
+imajdan aynı ayarlarla yeni bir container yaratarak sistemin çalışmaya devam 
+
+etmesi sağlanabilir. 
+
+4.Container içerisindeki uygulamada bir sıkıntı oluşursa veya herhangi bir yanlışlık 
+
+varsa bu container içerisine bağlanılarak çözülmez. Container dUrdUrUIUP yerine 
+
+sıfırdan yeni bir container yaratılır. Eğer sıkıntı ayarlarla veya confıg ile ilgiliyse, 
+
+sorun imaj yaratma aşamasında çözülür ve sorunun çözüldüğü yeni bir imaj 
+
+ortaya çıkarılarak bundan yeni bir container yaratılır. 
+
+ 
+
+docker volume create ilkvolume Volume oluşturma 
+
+ 
+
+docker volume inspect ilkvolume Oluşturulan volumeyi inceliyorum  
+
+ 
+
+docker container run -it -v ilkvolume:/uygulama alpine sh --> Volumeyi containera bağlıyorum 
+
+ 
+
+touch abc.txt klasör içinde dosya oluşturur 
+
+ 
+
+cat abc.txt abc dosyasının içini yazdırır 
+
+  
+
+ 
+
+ 
+
+DERS 27 
+
+1.Eğer bir volume mount edildiği klasör mevcut değilse bu klasörü yaratır. 
+
+Ve o anda volume içerisinde hangi dosyalar varsa bu klasörde de o 
+
+dosyaları görürsünüz. Boşsa boş görürsünüz. 
+
+2.Eğer bir volüme imaj içerisinde bulunan mevcut bir klasöre mount edilirse: 
+
+A: Klasör boşsa o anda volume içerisinde hangi dosyalar varsa bu klasörde de 
+
+o dosyaları görürsünüz. 
+
+B: Klasörde dosya varsa ve volume boşsa bu sefer o klasördeki dosyalar 
+
+volume'e kopyalanır. 
+
+C: Klasörde dosya var ya da yok fakat volume'de dosyalar varsa yani volume 
+
+boş değilse, bu sefer siz o klasörün içerisinde volume'de ne dosya varsa onı-j 
+
+Görürsünüz. 
+
+ 
+
+docker container run --rm -it osgurozturknet/adanzyedocker sh--> rm container kapatıldığında silmesi komutudur 
+
+  
+
+docker container run --rm -it -v deneme1:/test ozgurozturknet/adanzyedocker sh--> deneme1 volumunu ozgurozturknet/adanzyedocker dan üretilen containera bağlıyoruz 
+
+ 
+
+docker container run --rm -it -v deneme1:/usr/src/myapp ozgurozturknet/adanzyedocker sh -->burada ise oluşturulan volumeyi  /usr/src/myapp klasörüne yapıştırıyoruz 
+
+ 
+
+ 
+
+ 
+
+DERS 28  
+
+Bind Mounts --> Dockerın yüklü olduğu sistemdeki klasörü dockera monte etme yöntemi(imagesiz). Bind Mounts, bir ana bilgisayar dosya veya dizinini Docker konteynerine monte etmek için kullanılır. Bu, konteynerin içerisindeki dosyalara veya dizinlere, ana bilgisayar dosya sistemi üzerinden erişim sağlar. Ana bilgisayar dosyası ve konteyner arasında yapılan değişiklikler, her iki tarafı da etkiler. Bu, uygulamaların dosyaları paylaşmasını veya bir uygulamanın ana bilgisayar dosya sistemi üzerindeki verilere erişmesini sağlar. 
+
+Bunu yapabilmek için küçük ayarlar laızım 
+
+ 
+
+docker container run -d -p 80:80 -v E:\Yazılım\AdanZyeDocker\kisim3\bolum28\websitesi:/usr/share/nginx/html nginx --> nginx altındaki html klasörü gözükmesin onun yerine bolüm28 altındaki website gözüksün 
